@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대리점 출고 상황판 · 2026년 3월</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f2f7;
+  --white: #ffffff;
+  --surface: #ffffff;
+  --border: #e5e8ef;
+  --blue: #2563eb;
+  --blue-light: #eff4ff;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --amber: #d97706;
+  --amber-light: #fffbeb;
+  --indigo: #4f46e5;
+  --indigo-light: #eef2ff;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --cyan: #0891b2;
+  --cyan-light: #ecfeff;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  min-height: 100vh;
+}
+
+/* ── 헤더 ── */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: var(--shadow);
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-icon {
+  width: 36px; height: 36px;
+  background: var(--blue);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.header-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.header-sub { font-size: 12px; color: var(--text3); margin-top: 1px; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.tag {
+  padding: 5px 12px; border-radius: 6px;
+  font-size: 12px; font-weight: 600;
+  background: var(--blue-light); color: var(--blue);
+  border: 1px solid #bfdbfe;
+}
+.live-tag {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 6px;
+  background: var(--green-light); color: var(--green);
+  font-size: 11px; font-weight: 600; border: 1px solid #6ee7b7;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+/* ── 레이아웃 ── */
+.page { padding: 24px 28px; max-width: 1600px; margin: 0 auto; }
+
+/* ── 필터 바 ── */
+.filter-strip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+.filter-label { font-size: 11px; font-weight: 600; color: var(--text3); letter-spacing: 0.5px; margin-right: 4px; }
+.f-btn {
+  padding: 5px 14px; border-radius: 20px; border: none; cursor: pointer;
+  font-size: 12px; font-weight: 500; color: var(--text2);
+  background: var(--bg); transition: all 0.15s;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.f-btn:hover { background: #e0e7ff; color: var(--indigo); }
+.f-btn.on { background: var(--blue); color: #fff; font-weight: 600; }
+
+/* ── KPI 카드 ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.kpi {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.kpi-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: 14px 14px 0 0;
+}
+.kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.kpi-ico {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.kpi-num { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+.kpi-num small { font-size: 14px; font-weight: 500; color: var(--text3); margin-left: 2px; }
+.kpi-name { font-size: 11px; font-weight: 600; color: var(--text3); margin-bottom: 4px; letter-spacing: 0.2px; }
+.kpi-foot { font-size: 11px; color: var(--text3); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+
+/* ── 차트 그리드 ── */
+.charts-top {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.charts-bot {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+/* ── 공통 카드 ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; gap: 7px;
+}
+.card-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--blue);
+  border-radius: 2px;
+  display: inline-block;
+}
+.card-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px;
+  background: var(--blue-light); color: var(--blue);
+}
+
+/* ── 바 리스트 ── */
+.bar-list { display: flex; flex-direction: column; gap: 6px; }
+.bar-row { display: block; }
+.bar-row-inner { display: flex; align-items: center; gap: 8px; }
+.bar-name { font-size: 12px; color: var(--text2); width: 72px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { flex: 1; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.7s cubic-bezier(.4,0,.2,1); }
+.bar-val { font-size: 12px; font-weight: 700; color: var(--text); width: 24px; text-align: right; }
+.bar-pct { font-size: 10px; color: var(--text3); width: 30px; text-align: right; }
+
+/* ── 도넛 ── */
+.donut-wrap { display: flex; align-items: center; gap: 20px; }
+.donut-legend { display: flex; flex-direction: column; gap: 9px; flex: 1; }
+.leg-row { display: flex; align-items: center; gap: 8px; }
+.leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.leg-name { font-size: 12px; color: var(--text2); flex: 1; }
+.leg-cnt { font-size: 12px; font-weight: 700; }
+.leg-pct { font-size: 10px; color: var(--text3); width: 30px; text-align: right; }
+
+/* ── 방식 세그먼트 ── */
+.seg-wrap { display: flex; gap: 8px; margin-bottom: 14px; }
+.seg-item { flex: 1; background: var(--bg); border-radius: 10px; padding: 12px; text-align: center; }
+.seg-val { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.seg-name { font-size: 10px; color: var(--text3); margin-top: 3px; font-weight: 500; }
+.seg-bar-track { height: 4px; background: #e2e8f0; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.seg-bar-fill { height: 100%; border-radius: 2px; }
+
+/* ── TOP 차량 ── */
+.top-list { display: flex; flex-direction: column; gap: 8px; }
+.top-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg); border-radius: 8px; }
+.top-rank {
+  width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800;
+}
+.rank-1 { background: #fef3c7; color: #92400e; }
+.rank-2 { background: #f1f5f9; color: #475569; }
+.rank-3 { background: #fdf4ee; color: #9a3412; }
+.rank-n { background: #f8fafc; color: #94a3b8; }
+.top-car { font-size: 12px; font-weight: 600; color: var(--text); flex: 1; }
+.top-manu { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+.manu-h { background: #eff6ff; color: #2563eb; }
+.manu-k { background: #f0fdf4; color: #16a34a; }
+.top-cnt { font-size: 13px; font-weight: 800; color: var(--text); }
+.top-mini-bar { height: 4px; margin-top: 4px; border-radius: 2px; }
+
+/* ── 테이블 ── */
+.table-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.table-top {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.table-top-left { display: flex; align-items: center; gap: 8px; }
+.tbl-title { font-size: 13px; font-weight: 700; }
+.tbl-badge {
+  font-size: 11px; font-weight: 700;
+  padding: 2px 10px; border-radius: 12px;
+  background: var(--blue-light); color: var(--blue);
+}
+.tbl-search {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 12px;
+}
+.tbl-search input {
+  border: none; background: transparent; font-size: 12px; color: var(--text);
+  width: 180px; outline: none; font-family: 'Noto Sans KR', sans-serif;
+}
+.tbl-scroll { overflow-x: auto; max-height: 380px; overflow-y: auto; }
+.tbl-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+.tbl-scroll::-webkit-scrollbar-track { background: transparent; }
+.tbl-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: #f8fafc;
+  padding: 9px 14px;
+  font-size: 11px; font-weight: 700; color: var(--text3);
+  text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 1;
+}
+tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.1s; cursor: default; }
+tbody tr:hover { background: #f8fafc; }
+tbody td { padding: 9px 14px; font-size: 12px; color: var(--text); white-space: nowrap; }
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 5px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2px;
+}
+.s결제 { background: var(--green-light); color: var(--green); }
+.s선점 { background: var(--amber-light); color: var(--amber); }
+.s발주 { background: var(--blue-light); color: var(--blue); }
+.s제작 { background: var(--indigo-light); color: var(--indigo); }
+.s선출 { background: var(--cyan-light); color: var(--cyan); }
+.m렌트 { background: #eef2ff; color: #4f46e5; }
+.m리스 { background: #fdf4ff; color: #a21caf; }
+.m할부 { background: var(--amber-light); color: var(--amber); }
+.m일시불 { background: var(--green-light); color: var(--green); }
+.mh { color: #2563eb; font-weight: 700; }
+.mk { color: #16a34a; font-weight: 700; }
+.price { font-weight: 600; font-variant-numeric: tabular-nums; }
+.no { color: var(--text3); }
+/* 사업자구분 배지 */
+.biz개인 { background: #f0fdf4; color: #15803d; }
+.biz개사 { background: #eff6ff; color: #1d4ed8; }
+.biz법인 { background: #fdf4ff; color: #7e22ce; }
+
+/* ── 진행방식 상세 ── */
+.method-detail { display: flex; flex-direction: column; gap: 12px; }
+.md-row {}
+.md-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.md-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.md-info { font-size: 11px; color: var(--text3); }
+.md-track { height: 7px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+.md-fill { height: 100%; border-radius: 4px; transition: width .7s; }
+
+.add-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;
+  background: var(--blue); color: #fff;
+  font-size: 13px; font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: all 0.15s; box-shadow: 0 2px 6px rgba(37,99,235,0.35);
+}
+.add-btn:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+
+/* ── 모달 오버레이 ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(15,23,42,0.45); backdrop-filter: blur(3px);
+  align-items: flex-start; justify-content: center;
+  padding-top: 60px;
+}
+.modal-overlay.open { display: flex; animation: fadeOverlay 0.2s ease; }
+@keyframes fadeOverlay { from { opacity:0; } to { opacity:1; } }
+
+/* ── 모달 박스 ── */
+.modal {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  width: 520px; max-width: 95vw;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  animation: slideModal 0.25s cubic-bezier(.4,0,.2,1);
+}
+.modal::-webkit-scrollbar { width: 5px; }
+.modal::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+@keyframes slideModal {
+  from { opacity:0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+.modal-head {
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+  position: sticky; top: 0; background: var(--white); z-index: 1;
+}
+.modal-head-left h2 { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.modal-head-left p { font-size: 12px; color: var(--text3); margin-top: 4px; }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg);
+  cursor: pointer; font-size: 16px; color: var(--text3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; flex-shrink: 0;
+}
+.modal-close:hover { background: #fee2e2; color: var(--red); border-color: #fca5a5; }
+
+/* ── 폼 섹션 ── */
+.modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 20px; }
+.form-section-title {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.form-section-dot { width: 8px; height: 8px; border-radius: 50%; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-grid.single { grid-template-columns: 1fr; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-label {
+  font-size: 11px; font-weight: 700; color: var(--text2);
+  display: flex; align-items: center; gap: 3px;
+}
+.form-label .req { color: var(--red); }
+.form-input, .form-select {
+  padding: 9px 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  font-size: 13px; color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: none; transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--blue); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+}
+.form-input::placeholder { color: var(--text3); font-size: 12px; }
+.form-input.error { border-color: var(--red); background: #fff8f8; }
+.form-select { cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  padding-right: 28px;
+}
+
+/* ── 모달 푸터 ── */
+.modal-foot {
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; gap: 10px;
+  position: sticky; bottom: 0; background: var(--white);
+}
+.btn-cancel {
+  padding: 9px 20px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif; transition: all 0.15s;
+}
+.btn-cancel:hover { background: var(--bg); }
+.btn-save {
+  padding: 9px 24px; border-radius: 8px; border: none;
+  background: var(--blue); color: #fff;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.15s; box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+}
+.btn-save:hover { background: #1d4ed8; }
+
+/* ── 토스트 알림 ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #0f172a; color: #fff;
+  padding: 12px 22px; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  opacity: 0; transition: all 0.3s; z-index: 2000;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--green); }
+.toast.error-toast { background: var(--red); }
+.kpi { cursor: pointer; user-select: none; }
+.kpi:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-1px); transition: all 0.15s; }
+.kpi.active { box-shadow: 0 0 0 2px var(--kpi-ac, #2563eb), 0 4px 12px rgba(0,0,0,0.1); }
+.kpi-click-hint { font-size: 10px; color: var(--text3); margin-top: 4px; display: flex; align-items: center; gap: 3px; }
+
+/* ── 인라인 드릴다운 패널 ── */
+.bar-name-btn {
+  font-size: 12px; color: var(--blue);
+  width: 72px; flex-shrink: 0; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  cursor: pointer; padding: 2px 5px; border-radius: 5px;
+  transition: all 0.15s; border: none; background: none;
+  font-family: 'Noto Sans KR', sans-serif; text-align: left;
+  text-decoration: underline dotted; text-underline-offset: 2px;
+}
+.bar-name-btn:hover { background: var(--blue-light); text-decoration: underline; }
+.bar-name-btn.active { font-weight: 700; background: var(--blue-light); }
+.fin-bar .bar-name-btn { width: 80px; font-size: 11px; }
+
+.drill-panel {
+  display: none; background: #f8fafc;
+  border: 1px solid #bfdbfe; border-radius: 10px;
+  margin: 6px 0 4px; overflow: hidden;
+}
+.drill-panel.open { display: block; animation: drillIn 0.18s ease; }
+@keyframes drillIn {
+  from { opacity:0; transform:translateY(-4px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.drill-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 12px; background: #eff4ff; border-bottom: 1px solid #dbeafe;
+}
+.drill-head-title { font-size: 12px; font-weight: 700; color: var(--blue); display: flex; align-items: center; gap: 6px; }
+.drill-close {
+  width: 20px; height: 20px; border-radius: 5px; border: none;
+  background: rgba(37,99,235,0.12); color: var(--blue);
+  cursor: pointer; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.drill-close:hover { background: rgba(37,99,235,0.25); }
+.drill-scroll { max-height: 250px; overflow-y: auto; }
+.drill-scroll::-webkit-scrollbar { width: 4px; }
+.drill-scroll::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 2px; }
+.drill-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.drill-tbl th { padding: 6px 10px; background: #f1f5f9; color: var(--text3); font-weight: 700; text-align: left; border-bottom: 1px solid #e5e8ef; white-space: nowrap; position: sticky; top: 0; z-index: 1; }
+.drill-tbl td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; color: var(--text); white-space: nowrap; }
+.drill-tbl tr:last-child td { border-bottom: none; }
+.drill-tbl tr:hover td { background: #eff6ff; }
+
+/* ── KPI 상세 패널 ── */
+.kpi-detail-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+  overflow: hidden;
+  display: none;
+  animation: slideDown 0.25s ease;
+}
+.kpi-detail-panel.open { display: block; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.kpi-panel-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: #f8fafc;
+}
+.kpi-panel-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 700;
+}
+.kpi-panel-badge {
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 12px;
+}
+.kpi-panel-close {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--white);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: var(--text3); line-height: 1;
+  transition: all 0.15s;
+}
+.kpi-panel-close:hover { background: var(--bg); color: var(--text); }
+.kpi-panel-search {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.kpi-panel-search input {
+  width: 100%; padding: 9px 14px 9px 36px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); font-size: 13px;
+  color: var(--text); outline: none;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8' stroke='%2394a3b8' stroke-width='2'/%3E%3Cpath d='m21 21-4.35-4.35' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 10px center;
+  transition: border-color 0.15s;
+}
+.kpi-panel-search input:focus { border-color: var(--blue); background-color: var(--white); }
+.kpi-panel-count { float: right; font-size: 12px; color: var(--text3); margin-top: -30px; margin-right: 4px; line-height: 38px; }
+.kpi-panel-scroll { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+.kpi-panel-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+.kpi-panel-scroll::-webkit-scrollbar-track { background: transparent; }
+.kpi-panel-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+/* 반응형 */
+@media (max-width: 1280px) {
+  .kpi-row { grid-template-columns: repeat(3, 1fr); }
+  .charts-top { grid-template-columns: 1fr !important; }
+  .charts-bot { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 900px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .charts-top, .charts-bot { grid-template-columns: 1fr !important; }
+  .page { padding: 16px; }
+}
+
+/* 애니메이션 */
+.card, .kpi, .table-card { animation: fadeUp 0.35s ease both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.kpi:nth-child(1){animation-delay:.05s}
+.kpi:nth-child(2){animation-delay:.08s}
+.kpi:nth-child(3){animation-delay:.11s}
+.kpi:nth-child(4){animation-delay:.14s}
+.kpi:nth-child(5){animation-delay:.17s}
+.kpi:nth-child(6){animation-delay:.20s}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-icon">🚗</div>
+    <div>
+      <div class="header-title">대리점 출고 현황 상황판</div>
+      <div class="header-sub">현대·기아 전체 대리점 통합</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="syncStatus" style="font-size:11px;color:var(--text3);font-weight:500"></span>
+    <div class="live-tag"><div class="live-dot"></div>LIVE</div>
+    <div class="tag">2026년 3월</div>
+    <button class="add-btn" onclick="openModal()">＋ 데이터 입력</button>
+  </div>
+</div>
+
+<!-- ★ URL 미설정 안내 배너 -->
+<div id="configBanner" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(15,23,42,0.7);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;padding:40px 48px;max-width:520px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,0.25);text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">📊</div>
+    <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin-bottom:10px">구글 시트 연동 설정이 필요합니다</h2>
+    <p style="font-size:13px;color:#64748b;line-height:1.7;margin-bottom:24px">
+      이 파일의 상단 <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:12px">SHEETS_API_URL</code> 변수에<br>
+      Apps Script 웹앱 URL을 붙여넣으면<br>구글 시트와 실시간으로 연동됩니다.
+    </p>
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:24px;text-align:left">
+      <div style="font-size:11px;color:#94a3b8;font-weight:700;margin-bottom:8px">HTML 파일 상단에서 수정</div>
+      <code style="font-size:12px;color:#2563eb;line-height:1.8">const SHEETS_API_URL =<br>'https://script.google.com/macros/s/…/exec';</code>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <a href="설정_가이드.md" target="_blank" style="padding:10px 20px;background:#eff4ff;color:#2563eb;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">📖 설정 가이드 보기</a>
+      <button onclick="document.getElementById('configBanner').style.display='none'" style="padding:10px 20px;background:#0f172a;color:#fff;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer">일단 닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 로딩 오버레이 -->
+<div id="loadingOverlay" style="display:none;position:fixed;inset:0;z-index:1500;background:rgba(240,242,247,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;flex-direction:column;gap:14px">
+  <div style="width:44px;height:44px;border:4px solid #e0e7ff;border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite"></div>
+  <div style="font-size:13px;font-weight:600;color:#2563eb">구글 시트에서 데이터 불러오는 중...</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<!-- 데이터 입력 모달 -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <h2>✏️ 출고 데이터 입력</h2>
+        <p>신규 건을 추가하거나 기존 데이터를 수정합니다</p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- 기본 정보 -->
+      <div>
+        <div class="form-section-title">
+          <div class="form-section-dot" style="background:#ef4444"></div>
+          기본 정보
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">소속 업체 <span class="req">*</span></label>
+            <select class="form-select" id="f-소속">
+              <option value="">선택</option>
+              <option>GNA</option><option>KS</option><option>겟차</option>
+              <option>렌트모빌링크</option><option>모빌러그</option><option>시현</option>
+              <option>신차드림</option><option>오토다이렉트카</option><option>원더굿</option>
+              <option>카데이</option><option>카라멜</option><option>카밍</option>
+              <option>원큐모빌리티</option><option>아벨홀딩스</option><option>차봇</option>
+              <option value="__new__">+ 직접 입력</option>
+            </select>
+            <input class="form-input" id="f-소속-직접" placeholder="업체명 직접 입력" style="display:none;margin-top:6px">
+          </div>
+          <div class="form-field">
+            <label class="form-label">제조사 <span class="req">*</span></label>
+            <select class="form-select" id="f-제조사">
+              <option value="">선택</option>
+              <option>현대</option><option>기아</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">대리점 <span class="req">*</span></label>
+            <input class="form-input" id="f-대리점" placeholder="예) 중구, 인창, 전농">
+          </div>
+          <div class="form-field">
+            <label class="form-label">차량명 <span class="req">*</span></label>
+            <input class="form-input" id="f-차량" placeholder="예) 코나 하이브리드, 팰리세이드">
+          </div>
+          <div class="form-field">
+            <label class="form-label">계약번호</label>
+            <input class="form-input" id="f-계약번호" placeholder="예) E42 26 GN 000108">
+          </div>
+          <div class="form-field">
+            <label class="form-label">담당자</label>
+            <input class="form-input" id="f-담당자" placeholder="예) 홍길동">
+          </div>
+        </div>
+      </div>
+
+      <!-- 고객 / 금융 -->
+      <div>
+        <div class="form-section-title">
+          <div class="form-section-dot" style="background:#3b82f6"></div>
+          고객 / 금융
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">고객명 <span class="req">*</span></label>
+            <input class="form-input" id="f-고객명" placeholder="고객 이름">
+          </div>
+          <div class="form-field">
+            <label class="form-label">금융사</label>
+            <input class="form-input" id="f-금융사" placeholder="예) 현대캐피탈, KB캐피탈">
+          </div>
+          <div class="form-field">
+            <label class="form-label">진행방식 <span class="req">*</span></label>
+            <select class="form-select" id="f-진행방식">
+              <option value="">선택</option>
+              <option>렌트</option><option>리스</option>
+              <option>할부</option><option>일시불</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">상태 <span class="req">*</span></label>
+            <select class="form-select" id="f-상태">
+              <option value="">선택</option>
+              <option>선점</option><option>발주(오더)</option>
+              <option>제작증</option><option>결제</option><option>선출고</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid single" style="margin-top:12px">
+          <div class="form-field">
+            <label class="form-label">탁송지</label>
+            <input class="form-input" id="f-탁송지" placeholder="탁송 주소">
+          </div>
+        </div>
+      </div>
+
+      <!-- 날짜 / 금액 -->
+      <div>
+        <div class="form-section-title">
+          <div class="form-section-dot" style="background:#8b5cf6"></div>
+          날짜 / 금액
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="form-label">발주 요청일</label>
+            <input type="date" class="form-input" id="f-발주일">
+          </div>
+          <div class="form-field">
+            <label class="form-label">선점일</label>
+            <input type="date" class="form-input" id="f-선점일">
+          </div>
+          <div class="form-field">
+            <label class="form-label">출고일</label>
+            <input type="date" class="form-input" id="f-출고일">
+          </div>
+          <div class="form-field">
+            <label class="form-label">차량가 (원)</label>
+            <input type="number" class="form-input" id="f-차량가" placeholder="예) 34900000" step="10000">
+          </div>
+          <div class="form-field">
+            <label class="form-label">할인가 (원)</label>
+            <input type="number" class="form-input" id="f-할인가" placeholder="예) 1000000" step="10000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="saveData()">💾 저장하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<div class="page">
+
+  <!-- 필터 -->
+  <div class="filter-strip" id="filterStrip">
+    <span class="filter-label">업체 필터</span>
+    <button class="f-btn on" onclick="setFilter('ALL')">전체</button>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi" onclick="openPanel(0)" style="--kpi-ac:#2563eb">
+      <div class="kpi-accent" style="background:#2563eb"></div>
+      <div class="kpi-top">
+        <div>
+          <div class="kpi-name">3월 건수 ▼ 클릭</div>
+          <div class="kpi-num" id="k0">–<small>건</small></div>
+        </div>
+        <div class="kpi-ico" style="background:#eff4ff;font-size:20px;">📋</div>
+      </div>
+      <div class="kpi-foot" id="k0s">–</div>
+    </div>
+    <div class="kpi" onclick="openPanel(1)" style="--kpi-ac:#059669">
+      <div class="kpi-accent" style="background:#059669"></div>
+      <div class="kpi-top">
+        <div>
+          <div class="kpi-name">제작중·결제 ▼ 클릭</div>
+          <div class="kpi-num" id="k1">–<small>건</small></div>
+        </div>
+        <div class="kpi-ico" style="background:#ecfdf5;font-size:20px;">✅</div>
+      </div>
+      <div class="kpi-foot" id="k1s">–</div>
+    </div>
+    <div class="kpi" onclick="openPanel(2)" style="--kpi-ac:#d97706">
+      <div class="kpi-accent" style="background:#d97706"></div>
+      <div class="kpi-top">
+        <div>
+          <div class="kpi-name">선점 ▼ 클릭</div>
+          <div class="kpi-num" id="k2">–<small>건</small></div>
+        </div>
+        <div class="kpi-ico" style="background:#fffbeb;font-size:20px;">📌</div>
+      </div>
+      <div class="kpi-foot" id="k2s">–</div>
+    </div>
+    <div class="kpi" onclick="openPanel(3)" style="--kpi-ac:#4f46e5">
+      <div class="kpi-accent" style="background:#4f46e5"></div>
+      <div class="kpi-top">
+        <div>
+          <div class="kpi-name">발주 대기 ▼ 클릭</div>
+          <div class="kpi-num" id="k3">–<small>건</small></div>
+        </div>
+        <div class="kpi-ico" style="background:#eef2ff;font-size:20px;">📦</div>
+      </div>
+      <div class="kpi-foot" id="k3s">–</div>
+    </div>
+    <div class="kpi" onclick="openPanel(4)" style="--kpi-ac:#0891b2">
+      <div class="kpi-accent" style="background:#0891b2"></div>
+      <div class="kpi-top">
+        <div>
+          <div class="kpi-name">출고 완료 ▼ 클릭</div>
+          <div class="kpi-num" id="k4">–</div>
+        </div>
+        <div class="kpi-ico" style="background:#ecfeff;font-size:20px;">🚗</div>
+      </div>
+      <div class="kpi-foot" id="k4s">–</div>
+    </div>
+    <div class="kpi" onclick="openPanel(5)" style="--kpi-ac:#dc2626">
+      <div class="kpi-accent" style="background:#dc2626"></div>
+      <div class="kpi-top">
+        <div>
+          <div class="kpi-name">총 차량가 ▼ 클릭</div>
+          <div class="kpi-num" id="k5">–<small>억</small></div>
+        </div>
+        <div class="kpi-ico" style="background:#fef2f2;font-size:20px;">💰</div>
+      </div>
+      <div class="kpi-foot" id="k5s">–</div>
+    </div>
+  </div>
+
+  <!-- KPI 상세 패널 (KPI 클릭 시 표시) -->
+  <div class="kpi-detail-panel" id="kpiPanel">
+    <div class="kpi-panel-header">
+      <div class="kpi-panel-title">
+        <span id="panelIcon">📋</span>
+        <span id="panelTitle">상세 목록</span>
+        <span class="kpi-panel-badge" id="panelBadge" style="background:#eff4ff;color:#2563eb">0건</span>
+      </div>
+      <button class="kpi-panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="kpi-panel-search">
+      <input type="text" id="panelSearch" placeholder="업체, 차량, 고객명, 대리점, 상태 검색..." oninput="filterPanel()">
+      <div class="kpi-panel-count" id="panelCount">총 0건 표시 중</div>
+    </div>
+    <div class="kpi-panel-scroll">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr id="panelThead">
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">업체</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">제조사</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">대리점</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">차량</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">고객명</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">금융사</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">방식</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">상태</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:right;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">차량가</th>
+            <th style="background:#f8fafc;padding:9px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-align:left;border-bottom:1px solid #e5e8ef;position:sticky;top:0;white-space:nowrap">탁송지</th>
+          </tr>
+        </thead>
+        <tbody id="panelTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 상단 차트 2열: 업체별 + 대리점별 -->
+  <div class="charts-top" style="grid-template-columns:1fr 1.4fr">
+    <!-- 업체별 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">업체별 건수</div>
+        <div class="card-badge" id="coBadge">–</div>
+      </div>
+      <div class="bar-list" id="coChart"></div>
+    </div>
+    <!-- 대리점별 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">대리점별 건수 TOP 10</div>
+      </div>
+      <div class="bar-list" id="dealerChart"></div>
+    </div>
+  </div>
+
+  <!-- 하단 차트 3열: 금융사 + 진행상태분포+진행방식 + 인기차종 -->
+  <div class="charts-bot" style="grid-template-columns:1fr 1fr 1fr">
+    <!-- 금융사 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">금융사 현황</div>
+        <div class="card-badge" id="finBadge">–</div>
+      </div>
+      <div class="bar-list" id="finChart"></div>
+    </div>
+    <!-- 상태 도넛 + 진행방식 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">진행 상태 분포</div>
+      </div>
+      <div class="donut-wrap">
+        <svg id="donutSvg" width="120" height="120" viewBox="0 0 120 120" style="flex-shrink:0"></svg>
+        <div class="donut-legend" id="donutLeg"></div>
+      </div>
+      <!-- 구분선 -->
+      <div style="border-top:1px solid var(--border);margin:16px 0 14px;"></div>
+      <div class="card-title" style="font-size:12px;margin-bottom:12px">진행 방식</div>
+      <div class="seg-wrap" id="segWrap"></div>
+      <div class="method-detail" id="methDetail"></div>
+    </div>
+    <!-- TOP 차량 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">인기 차종 TOP 8</div>
+      </div>
+      <div class="top-list" id="topCar"></div>
+    </div>
+  </div>
+
+  <!-- 테이블 -->
+  <div class="table-card">
+    <div class="table-top">
+      <div class="table-top-left">
+        <div class="tbl-title">📄 상세 데이터</div>
+        <div class="tbl-badge" id="tblBadge">0건</div>
+      </div>
+      <div class="tbl-search">
+        <span style="color:var(--text3)">🔍</span>
+        <input type="text" id="search" placeholder="차량, 고객명, 계약번호 검색..." oninput="renderTable()">
+      </div>
+    </div>
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>소속</th><th>제조사</th><th>대리점</th>
+            <th>차량</th><th>계약번호</th><th>구분</th><th>고객명</th><th>담당자</th><th>금융사</th>
+            <th>진행방식</th><th>상태</th><th>발주요청일</th><th>차량가</th><th>탁송지</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  ▼ 여기에 Apps Script 웹앱 URL을 붙여넣으세요 ▼
+// ══════════════════════════════════════════════════════════
+const COMPANY_URLS = [
+  { name: '겟차',         url: 'https://script.google.com/macros/s/AKfycbxB-2KZ36M_k_NlbYG1n1nUvukKk4LM_vUFAHXxjCVawxzxvN4qZtwOCNrmpkI9ekvO/exec' },
+  { name: '시현',         url: 'https://script.google.com/macros/s/AKfycbxTQMTE4jMDek5uPULTJDlEmXjfXuuU1rLLTUCq5HgWCVSwZJNdV1ocHtAa7UzYe9A/exec' },
+  { name: '오토리지',     url: 'https://script.google.com/macros/s/AKfycbzCgDbxpietqYdlIv7n4p_Ev1wG8hEGQeQX90iCisPk0DWAC5F1vrif1CBel0amoUT8/exec' },
+  { name: 'KS',           url: 'https://script.google.com/macros/s/AKfycbxxxHJThQVgKJ__IHOV1OvA_nstJ_Lx52m4IllQ48CHTQe0S4fzn3Mbus9RRuONN2o/exec' },
+  { name: 'GNA',          url: 'https://script.google.com/macros/s/AKfycbwZmZLcOmUmD2vb9N5enHFTO30uqjcA6_vhaee4FGsdhYgnD8YSRPHr0GGb3xgNMblM/exec' },
+  { name: '모빌러그',     url: 'https://script.google.com/macros/s/AKfycbxG0CyYCbJ9b0-24zZ4RRx7R0CU-aW8eTxdlIIot8Tiuqb4-dgzDqlH4MRNNJnDA1I/exec' },
+  { name: '신차드림',     url: 'https://script.google.com/macros/s/AKfycbyfT_end64EKrq7NAjsDbuvzneY-U-FxGllLnc1JbTaYLoPN9yNiU6YDQfinzfCJ1Bh/exec' },
+  { name: '오토다이렉트카', url: 'https://script.google.com/macros/s/AKfycbz68kGOlfunVgPJTPZ4kknn0ryAi8TaZOXebLKyqDO268jmm2zL3u7smeVUkqZcp1c/exec' },
+];
+const SHEETS_API_URL = COMPANY_URLS[0].url;
+//  ▲ 예) 'https://script.google.com/macros/s/AKfyc.../exec'
+// ══════════════════════════════════════════════════════════
+
+let ALL = [];
+
+let cur = 'ALL';
+
+function count(arr, key){ const m={}; arr.forEach(r=>{ const v=r[key]||'기타'; m[v]=(m[v]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); }
+
+function pct(a,b){ return b? Math.round(a/b*100)+'%' : '0%'; }
+
+function setFilter(co){
+  cur = co;
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.toggle('on', b.textContent==='전체'?co==='ALL':b.textContent===co));
+  render();
+}
+
+function buildFilters(){
+  const strip = document.getElementById('filterStrip');
+  const companies = [...new Set(ALL.map(r=>r['소속']))].sort();
+  companies.forEach(co => {
+    const b = document.createElement('button');
+    b.className = 'f-btn'; b.textContent = co;
+    b.onclick = ()=>setFilter(co);
+    strip.appendChild(b);
+  });
+}
+
+// 공통 배지 클래스
+const stClass = s => s==='결제'?'s결제':s==='선점'?'s선점':s&&s.includes('발주')?'s발주':s&&s.includes('제작')?'s제작':s&&s.includes('선출')?'s선출':'';
+const mtClass = m => m==='렌트'?'m렌트':m==='리스'?'m리스':m==='할부'?'m할부':m==='일시불'?'m일시불':'';
+const bizClass = b => !b?'':b.includes('법인')?'biz법인':b.includes('개인사업')||b.includes('사업자')?'biz개사':'biz개인';
+
+// 드릴다운 토글
+function toggleDrill(panelId, btn){
+  const panel = document.getElementById(panelId);
+  const isOpen = panel.classList.contains('open');
+  // 같은 그룹의 모든 패널 닫기 (co/fin/dealer 접두어 파악)
+  const prefix = panelId.replace(/-\d+$/, '');
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(p=>{
+    p.classList.remove('open');
+  });
+  // 해당 버튼 그룹의 active 초기화
+  const listEl = btn.closest('.bar-list');
+  if(listEl) listEl.querySelectorAll('.bar-name-btn').forEach(b=>b.classList.remove('active'));
+
+  if(!isOpen){
+    panel.classList.add('open');
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
+  }
+}
+
+function render(){
+  const data = cur==='ALL' ? ALL : ALL.filter(r=>r['소속']===cur);
+  const n = data.length;
+
+  // KPI
+  const states = {}; let hyundai=0, kia=0, totalPrice=0;
+  data.forEach(r=>{ states[r['상태']]=(states[r['상태']]||0)+1; if(r['제조사']==='현대')hyundai++; else if(r['제조사']==='기아')kia++; totalPrice+=r['차량가']||0; });
+
+  document.getElementById('k0').innerHTML = `${n}<small>건</small>`;
+  document.getElementById('k0s').textContent = `전체 누적 ${n}건`;
+  const paid = (states['결제']||0) + (states['제작증']||0);
+  document.getElementById('k1').innerHTML = `${paid}<small>건</small>`;
+  document.getElementById('k1s').textContent = `제작중 ${states['제작증']||0} · 결제 ${states['결제']||0}`;
+  const seon=states['선점']||0;
+  document.getElementById('k2').innerHTML = `${seon}<small>건</small>`;
+  document.getElementById('k2s').textContent = `출고 대기`;
+  const ord=states['발주(오더)']||0;
+  document.getElementById('k3').innerHTML = `${ord}<small>건</small>`;
+  document.getElementById('k3s').textContent = `납기 확인 필요`;
+  const sonchul = states['선출고']||0;
+  document.getElementById('k4').innerHTML = `${sonchul}`;
+  document.getElementById('k4s').textContent = `선출고 기록`;
+  const priceB = (totalPrice/1e8).toFixed(1);
+  document.getElementById('k5').innerHTML = `${priceB}<small>억</small>`;
+  document.getElementById('k5s').textContent = `평균 ${n? Math.round(totalPrice/n/10000).toLocaleString() : 0}만 · 수수료 추산`;
+
+  // 업체 바 (클릭 드릴다운)
+  const coData = count(data,'소속');
+  document.getElementById('coBadge').textContent = coData.length+'개';
+  const coMax = coData.length? coData[0][1] : 1;
+  document.getElementById('coChart').innerHTML = coData.map(([nm,cnt],i)=>{
+    const rows = data.filter(r=>r['소속']===nm);
+    const rowsHtml = rows.map(r=>`<tr>
+      <td>${r['차량']||'-'}</td>
+      <td>${r['고객명']||'-'}</td>
+      <td style="color:#64748b;font-size:11px">${r['담당자']||'-'}</td>
+      <td style="color:#475569">${r['금융사']||'-'}</td>
+      <td>${r['진행방식']?`<span class="badge ${mtClass(r['진행방식'])}">${r['진행방식']}</span>`:'-'}</td>
+      <td>${r['상태']?`<span class="badge ${stClass(r['상태'])}">${r['상태']}</span>`:'-'}</td>
+      <td style="color:#94a3b8;font-size:11px">${r['발주요청일']||'-'}</td>
+      <td style="text-align:right;font-weight:600">${r['차량가']? Math.round(r['차량가']/10000).toLocaleString()+'만':'-'}</td>
+    </tr>`).join('');
+    return `<div class="bar-row" id="co-row-${i}">
+      <div class="bar-row-inner">
+        <button class="bar-name-btn" onclick="toggleDrill('co-drill-${i}',this)" title="${nm}">${nm}</button>
+        <div class="bar-track"><div class="bar-fill" style="width:${cnt/coMax*100}%;background:${CO_COLORS[i%CO_COLORS.length]}"></div></div>
+        <div class="bar-val">${cnt}</div>
+        <div class="bar-pct">${pct(cnt,n)}</div>
+      </div>
+      <div class="drill-panel" id="co-drill-${i}">
+        <div class="drill-head">
+          <div class="drill-head-title">🏢 ${nm} &nbsp;<span style="font-weight:400;font-size:11px;color:#6b7280">${cnt}건</span></div>
+          <button class="drill-close" onclick="toggleDrill('co-drill-${i}',document.querySelector('#co-row-${i} .bar-name-btn'))">✕</button>
+        </div>
+        <div class="drill-scroll">
+          <table class="drill-tbl">
+            <thead><tr><th>차량</th><th>고객명</th><th>담당자</th><th>금융사</th><th>방식</th><th>상태</th><th>발주일</th><th style="text-align:right">차량가</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // 도넛
+  const stData = count(data,'상태').filter(([k])=>k);
+  const stTotal = stData.reduce((s,[,v])=>s+v,0);
+  const svg = document.getElementById('donutSvg');
+  const leg = document.getElementById('donutLeg');
+  if(stData.length){
+    const cx=60,cy=60,R=52,r=34; let paths='', start=-Math.PI/2;
+    stData.forEach(([nm,cnt])=>{
+      const angle=(cnt/stTotal)*2*Math.PI, end=start+angle;
+      const x1=cx+R*Math.cos(start),y1=cy+R*Math.sin(start);
+      const x2=cx+R*Math.cos(end),y2=cy+R*Math.sin(end);
+      const x3=cx+r*Math.cos(end),y3=cy+r*Math.sin(end);
+      const x4=cx+r*Math.cos(start),y4=cy+r*Math.sin(start);
+      const lg=angle>Math.PI?1:0;
+      const col=STATE_PALETTE[nm]||'#94a3b8';
+      paths+=`<path d="M${x1},${y1} A${R},${R} 0 ${lg},1 ${x2},${y2} L${x3},${y3} A${r},${r} 0 ${lg},0 ${x4},${y4} Z" fill="${col}"/>`;
+      start=end;
+    });
+    svg.innerHTML=paths+`<circle cx="${cx}" cy="${cy}" r="28" fill="white"/>
+      <text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="14" font-weight="800" fill="#0f172a">${stTotal}</text>
+      <text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="9" fill="#94a3b8">총건수</text>`;
+    leg.innerHTML=stData.map(([nm,cnt])=>`
+      <div class="leg-row">
+        <div class="leg-dot" style="background:${STATE_PALETTE[nm]||'#94a3b8'}"></div>
+        <div class="leg-name">${nm||'미정'}</div>
+        <div class="leg-cnt">${cnt}</div>
+        <div class="leg-pct">${pct(cnt,stTotal)}</div>
+      </div>`).join('');
+  }
+
+  // TOP 차량
+  const carData = count(data,'차량').slice(0,8);
+  const carMax = carData.length? carData[0][1] : 1;
+  const rankColors = ['rank-1','rank-2','rank-3'];
+  const carManu = {};
+  data.forEach(r=>{ if(!carManu[r['차량']]) carManu[r['차량']]=r['제조사']; });
+  const carColors=['#f59e0b','#94a3b8','#cd7f32','#3b82f6','#10b981','#8b5cf6','#ef4444','#06b6d4'];
+  document.getElementById('topCar').innerHTML = carData.map(([nm,cnt],i)=>{
+    const manu = carManu[nm]||'';
+    return `<div class="top-row">
+      <div class="top-rank ${rankColors[i]||'rank-n'}">${i+1}</div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          <span class="top-car">${nm}</span>
+          <span class="top-manu ${manu==='현대'?'manu-h':'manu-k'}">${manu}</span>
+        </div>
+        <div class="top-mini-bar" style="width:${cnt/carMax*100}%;background:${carColors[i]};height:3px;border-radius:2px"></div>
+      </div>
+      <div class="top-cnt">${cnt}</div>
+    </div>`;
+  }).join('');
+
+  // 금융사 바 (클릭 드릴다운)
+  const finData = count(data,'금융사').filter(([k])=>k).slice(0,10);
+  document.getElementById('finBadge').textContent = finData.length+'개사';
+  const finMax = finData.length? finData[0][1] : 1;
+  document.getElementById('finChart').innerHTML = finData.map(([nm,cnt],i)=>{
+    const rows = data.filter(r=>r['금융사']===nm);
+    const rowsHtml = rows.map(r=>`<tr>
+      <td style="font-weight:600">${r['소속']||'-'}</td>
+      <td>${r['차량']||'-'}</td>
+      <td>${r['고객명']||'-'}</td>
+      <td style="color:#64748b;font-size:11px">${r['담당자']||'-'}</td>
+      <td>${r['진행방식']?`<span class="badge ${mtClass(r['진행방식'])}">${r['진행방식']}</span>`:'-'}</td>
+      <td>${r['상태']?`<span class="badge ${stClass(r['상태'])}">${r['상태']}</span>`:'-'}</td>
+      <td style="color:#94a3b8;font-size:11px">${r['발주요청일']||'-'}</td>
+      <td style="text-align:right;font-weight:600">${r['차량가']? Math.round(r['차량가']/10000).toLocaleString()+'만':'-'}</td>
+    </tr>`).join('');
+    return `<div class="bar-row" id="fin-row-${i}">
+      <div class="bar-row-inner">
+        <button class="bar-name-btn" style="width:80px;font-size:11px" onclick="toggleDrill('fin-drill-${i}',this)" title="${nm}">${nm}</button>
+        <div class="bar-track"><div class="bar-fill" style="width:${cnt/finMax*100}%;background:${CO_COLORS[(i+4)%CO_COLORS.length]}"></div></div>
+        <div class="bar-val">${cnt}</div>
+        <div class="bar-pct">${pct(cnt,n)}</div>
+      </div>
+      <div class="drill-panel" id="fin-drill-${i}">
+        <div class="drill-head">
+          <div class="drill-head-title">🏦 ${nm} &nbsp;<span style="font-weight:400;font-size:11px;color:#6b7280">${cnt}건</span></div>
+          <button class="drill-close" onclick="toggleDrill('fin-drill-${i}',document.querySelector('#fin-row-${i} .bar-name-btn'))">✕</button>
+        </div>
+        <div class="drill-scroll">
+          <table class="drill-tbl">
+            <thead><tr><th>업체</th><th>차량</th><th>고객명</th><th>담당자</th><th>방식</th><th>상태</th><th>발주일</th><th style="text-align:right">차량가</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // 진행방식
+  const methData = count(data,'진행방식').filter(([k])=>k);
+  const methTotal = methData.reduce((s,[,v])=>s+v,0);
+  document.getElementById('segWrap').innerHTML = methData.map(([nm,cnt])=>`
+    <div class="seg-item">
+      <div class="seg-val" style="color:${METHOD_COLORS[nm]||'#475569'}">${cnt}</div>
+      <div class="seg-name">${nm}</div>
+      <div class="seg-bar-track"><div class="seg-bar-fill" style="width:${pct(cnt,methTotal)};background:${METHOD_COLORS[nm]||'#475569'}"></div></div>
+    </div>`).join('');
+  document.getElementById('methDetail').innerHTML = methData.map(([nm,cnt])=>`
+    <div class="md-row">
+      <div class="md-head">
+        <span class="md-name">${nm}</span>
+        <span class="md-info">${cnt}건 · ${pct(cnt,methTotal)}</span>
+      </div>
+      <div class="md-track"><div class="md-fill" style="width:${pct(cnt,methTotal)};background:${METHOD_COLORS[nm]||'#94a3b8'}"></div></div>
+    </div>`).join('');
+
+  // 대리점 바 (클릭 드릴다운)
+  const dealerData = count(data,'대리점').slice(0,10);
+  const dealerMax = dealerData.length? dealerData[0][1] : 1;
+  document.getElementById('dealerChart').innerHTML = dealerData.map(([nm,cnt],i)=>{
+    const rows = data.filter(r=>r['대리점']===nm);
+    const rowsHtml = rows.map(r=>`<tr>
+      <td style="font-weight:600">${r['소속']||'-'}</td>
+      <td>${r['차량']||'-'}</td>
+      <td>${r['고객명']||'-'}</td>
+      <td style="color:#64748b;font-size:11px">${r['담당자']||'-'}</td>
+      <td style="color:#475569;font-size:11px">${r['금융사']||'-'}</td>
+      <td>${r['진행방식']?`<span class="badge ${mtClass(r['진행방식'])}">${r['진행방식']}</span>`:'-'}</td>
+      <td>${r['상태']?`<span class="badge ${stClass(r['상태'])}">${r['상태']}</span>`:'-'}</td>
+      <td style="color:#94a3b8;font-size:11px">${r['발주요청일']||'-'}</td>
+    </tr>`).join('');
+    return `<div class="bar-row" id="dealer-row-${i}">
+      <div class="bar-row-inner">
+        <button class="bar-name-btn" onclick="toggleDrill('dealer-drill-${i}',this)" title="${nm}">${nm}</button>
+        <div class="bar-track"><div class="bar-fill" style="width:${cnt/dealerMax*100}%;background:${CO_COLORS[(i+2)%CO_COLORS.length]}"></div></div>
+        <div class="bar-val">${cnt}</div>
+        <div class="bar-pct">${pct(cnt,n)}</div>
+      </div>
+      <div class="drill-panel" id="dealer-drill-${i}">
+        <div class="drill-head">
+          <div class="drill-head-title">📍 ${nm} &nbsp;<span style="font-weight:400;font-size:11px;color:#6b7280">${cnt}건</span></div>
+          <button class="drill-close" onclick="toggleDrill('dealer-drill-${i}',document.querySelector('#dealer-row-${i} .bar-name-btn'))">✕</button>
+        </div>
+        <div class="drill-scroll">
+          <table class="drill-tbl">
+            <thead><tr><th>업체</th><th>차량</th><th>고객명</th><th>담당자</th><th>금융사</th><th>방식</th><th>상태</th><th>발주일</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderTable(data);
+}
+
+function renderTable(baseData){
+  const data = baseData || (cur==='ALL' ? ALL : ALL.filter(r=>r['소속']===cur));
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const rows = q ? data.filter(r=>
+    (r['차량']||'').toLowerCase().includes(q) ||
+    (r['고객명']||'').toLowerCase().includes(q) ||
+    (r['계약번호']||'').toLowerCase().includes(q) ||
+    (r['담당자']||'').toLowerCase().includes(q) ||
+    (r['소속']||'').toLowerCase().includes(q)
+  ) : data;
+
+  document.getElementById('tblBadge').textContent = rows.length+'건';
+
+  document.getElementById('tbody').innerHTML = rows.map((r,i)=>`<tr>
+    <td class="no">${i+1}</td>
+    <td style="font-weight:600">${r['소속']||'-'}</td>
+    <td class="${r['제조사']==='현대'?'mh':'mk'}">${r['제조사']||'-'}</td>
+    <td style="color:var(--text2)">${r['대리점']||'-'}</td>
+    <td style="font-weight:600">${r['차량']||'-'}</td>
+    <td style="color:var(--text3);font-size:11px;font-family:monospace">${r['계약번호']||'-'}</td>
+    <td>${r['사업자구분']?`<span class="badge ${bizClass(r['사업자구분'])}">${r['사업자구분']}</span>`:'-'}</td>
+    <td>${r['고객명']||'-'}</td>
+    <td style="color:var(--text2);font-size:12px">${r['담당자']||'-'}</td>
+    <td style="color:var(--text2);font-size:12px">${r['금융사']||'-'}</td>
+    <td>${r['진행방식']?`<span class="badge ${mtClass(r['진행방식'])}">${r['진행방식']}</span>`:'-'}</td>
+    <td>${r['상태']?`<span class="badge ${stClass(r['상태'])}">${r['상태']}</span>`:'-'}</td>
+    <td style="color:var(--text3);font-size:11px;text-align:center">${r['발주요청일']||'-'}</td>
+    <td class="price">${r['차량가']? Math.round(r['차량가']/10000).toLocaleString()+'만':'-'}</td>
+    <td style="color:var(--text3);font-size:11px">${r['탁송지']||'-'}</td>
+  </tr>`).join('');
+}
+
+// ── 모달 ──
+function openModal(){
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // 오늘 날짜를 선점일 기본값으로
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-선점일').value = today;
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  resetForm();
+}
+
+function handleOverlayClick(e){
+  if(e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function resetForm(){
+  ['f-소속','f-제조사','f-대리점','f-차량','f-계약번호','f-담당자',
+   'f-고객명','f-금융사','f-진행방식','f-상태','f-탁송지',
+   'f-발주일','f-선점일','f-출고일','f-차량가','f-할인가'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  document.getElementById('f-소속-직접').style.display = 'none';
+  document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+}
+
+// 소속 직접 입력 토글
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('f-소속').addEventListener('change', function(){
+    const direct = document.getElementById('f-소속-직접');
+    direct.style.display = this.value === '__new__' ? 'block' : 'none';
+    if(this.value === '__new__') direct.focus();
+  });
+});
+
+function getSojeok(){
+  const sel = document.getElementById('f-소속').value;
+  if(sel === '__new__') return document.getElementById('f-소속-직접').value.trim();
+  return sel;
+}
+
+function showToast(msg, type='success'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(()=>{ t.classList.remove('show'); }, 3000);
+}
+
+function saveData(){
+  // 필수값 검증
+  const required = [
+    {id:'f-소속', val: getSojeok(), label:'소속 업체'},
+    {id:'f-제조사', val: document.getElementById('f-제조사').value, label:'제조사'},
+    {id:'f-대리점', val: document.getElementById('f-대리점').value.trim(), label:'대리점'},
+    {id:'f-차량', val: document.getElementById('f-차량').value.trim(), label:'차량명'},
+    {id:'f-고객명', val: document.getElementById('f-고객명').value.trim(), label:'고객명'},
+    {id:'f-진행방식', val: document.getElementById('f-진행방식').value, label:'진행방식'},
+    {id:'f-상태', val: document.getElementById('f-상태').value, label:'상태'},
+  ];
+
+  let hasError = false;
+  document.querySelectorAll('.form-input, .form-select').forEach(el => el.classList.remove('error'));
+
+  for(const r of required){
+    if(!r.val){
+      const el = document.getElementById(r.id);
+      if(el) el.classList.add('error');
+      if(!hasError){
+        showToast(`⚠️ ${r.label}을(를) 입력해 주세요`, 'error-toast');
+        hasError = true;
+      }
+    }
+  }
+  if(hasError) return;
+
+  const newRec = {
+    '소속': getSojeok(),
+    '제조사': document.getElementById('f-제조사').value,
+    '대리점': document.getElementById('f-대리점').value.trim(),
+    '차량': document.getElementById('f-차량').value.trim(),
+    '계약번호': document.getElementById('f-계약번호').value.trim(),
+    '고객명': document.getElementById('f-고객명').value.trim(),
+    '금융사': document.getElementById('f-금융사').value.trim(),
+    '진행방식': document.getElementById('f-진행방식').value,
+    '상태': document.getElementById('f-상태').value,
+    '탁송지': document.getElementById('f-탁송지').value.trim(),
+    '차량가': parseFloat(document.getElementById('f-차량가').value) || 0,
+    '할인가': parseFloat(document.getElementById('f-할인가').value) || 0,
+  };
+
+  // 데이터 추가
+  ALL.push(newRec);
+
+  // 구글 시트에도 저장 시도 (URL 설정된 경우)
+  if (SHEETS_API_URL && SHEETS_API_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    fetch(SHEETS_API_URL + '?action=append', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(newRec)
+    }).catch(() => {}); // 실패해도 로컬엔 반영됨
+  }
+
+  // 업체 버튼이 없으면 필터에 추가
+  const strip = document.getElementById('filterStrip');
+  const existing = [...strip.querySelectorAll('.f-btn')].map(b=>b.textContent);
+  if(!existing.includes(newRec['소속'])){
+    const b = document.createElement('button');
+    b.className = 'f-btn'; b.textContent = newRec['소속'];
+    b.onclick = ()=>setFilter(newRec['소속']);
+    strip.appendChild(b);
+  }
+
+  closeModal();
+  render();
+  showToast(`✅ ${newRec['소속']} · ${newRec['차량']} 저장 완료`, 'success');
+
+  // 패널이 열려있으면 갱신
+  if(curKpiIdx >= 0) openPanel(curKpiIdx);
+}
+
+// ESC 키로 모달 및 KPI 패널 닫기
+document.addEventListener('keydown', e=>{ 
+  if(e.key==='Escape'){
+    if(document.getElementById('modalOverlay').classList.contains('open')){
+      closeModal();
+    } else if(document.getElementById('kpiPanel').classList.contains('open')){
+      closePanel();
+    }
+  }
+});
+
+// ── KPI 패널 ──
+const KPI_CONFIG = [
+  { icon:'📋', title:'3월 건수 상세 목록', color:'#2563eb', bg:'#eff4ff', filter: d => d },
+  { icon:'✅', title:'제작중·결제 목록',   color:'#059669', bg:'#ecfdf5', filter: d => d.filter(r=>r['상태']==='결제'||r['상태']==='제작증') },
+  { icon:'📌', title:'선점 목록',          color:'#d97706', bg:'#fffbeb', filter: d => d.filter(r=>r['상태']==='선점') },
+  { icon:'📦', title:'발주 대기 목록',     color:'#4f46e5', bg:'#eef2ff', filter: d => d.filter(r=>r['상태'].includes('발주')) },
+  { icon:'🚗', title:'출고 완료 목록',     color:'#0891b2', bg:'#ecfeff', filter: d => d.filter(r=>r['상태']==='선출고') },
+  { icon:'💰', title:'총 차량가 상세',     color:'#dc2626', bg:'#fef2f2', filter: d => d.filter(r=>(r['차량가']||0)>0) },
+];
+
+let panelBaseData = [];
+let curKpiIdx = -1;
+
+function openPanel(idx){
+  const data = cur==='ALL' ? ALL : ALL.filter(r=>r['소속']===cur);
+  const cfg = KPI_CONFIG[idx];
+
+  if(curKpiIdx === idx){
+    closePanel(); return;
+  }
+  curKpiIdx = idx;
+
+  document.querySelectorAll('.kpi').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.getElementById('panelIcon').textContent = cfg.icon;
+  document.getElementById('panelTitle').textContent = cfg.title;
+  const badge = document.getElementById('panelBadge');
+  badge.style.background = cfg.bg;
+  badge.style.color = cfg.color;
+
+  panelBaseData = cfg.filter(data);
+  document.getElementById('panelSearch').value = '';
+  filterPanel();
+
+  const panel = document.getElementById('kpiPanel');
+  panel.classList.add('open');
+  panel.style.borderColor = cfg.color;
+  document.getElementById('panelThead').querySelectorAll('th').forEach(th=>{
+    th.style.borderBottom = `2px solid ${cfg.color}`;
+  });
+
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function closePanel(){
+  document.getElementById('kpiPanel').classList.remove('open');
+  document.querySelectorAll('.kpi').forEach(el => el.classList.remove('active'));
+  curKpiIdx = -1;
+}
+
+function filterPanel(){
+  const q = document.getElementById('panelSearch').value.trim().toLowerCase();
+  const rows = q ? panelBaseData.filter(r =>
+    (r['소속']||'').toLowerCase().includes(q) ||
+    (r['차량']||'').toLowerCase().includes(q) ||
+    (r['고객명']||'').toLowerCase().includes(q) ||
+    (r['대리점']||'').toLowerCase().includes(q) ||
+    (r['상태']||'').toLowerCase().includes(q) ||
+    (r['금융사']||'').toLowerCase().includes(q)
+  ) : panelBaseData;
+
+  document.getElementById('panelBadge').textContent = panelBaseData.length+'건';
+  document.getElementById('panelCount').textContent = `총 ${rows.length}건 표시 중`;
+
+  document.getElementById('panelTbody').innerHTML = rows.map(r=>`<tr style="border-bottom:1px solid #f1f5f9;transition:background .1s" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">
+    <td style="padding:9px 14px;font-size:12px;font-weight:700">${r['소속']||'-'}</td>
+    <td style="padding:9px 14px;font-size:12px" class="${r['제조사']==='현대'?'mh':'mk'}">${r['제조사']||'-'}</td>
+    <td style="padding:9px 14px;font-size:12px;color:#475569">${r['대리점']||'-'}</td>
+    <td style="padding:9px 14px;font-size:12px;font-weight:600">${r['차량']||'-'}</td>
+    <td style="padding:9px 14px;font-size:12px">${r['고객명']||'-'}</td>
+    <td style="padding:9px 14px;font-size:12px;color:#475569">${r['금융사']||'-'}</td>
+    <td style="padding:9px 14px">${r['진행방식']?`<span class="badge ${mtClass(r['진행방식'])}">${r['진행방식']}</span>`:'-'}</td>
+    <td style="padding:9px 14px">${r['상태']?`<span class="badge ${stClass(r['상태'])}">${r['상태']}</span>`:'-'}</td>
+    <td style="padding:9px 14px;font-size:12px;font-weight:600;text-align:right">${r['차량가']? Math.round(r['차량가']/10000).toLocaleString()+'만':'-'}</td>
+    <td style="padding:9px 14px;font-size:11px;color:#94a3b8">${r['탁송지']||'-'}</td>
+  </tr>`).join('');
+}
+
+// ── 구글 시트 데이터 로드 ──
+async function loadFromSheets() {
+  setLoading(true);
+  try {
+    // 모든 업체 URL에서 병렬로 데이터 가져오기
+    const results = await Promise.allSettled(
+      COMPANY_URLS.map(c => fetch(c.url).then(r => r.json()).then(j => {
+        const rows = (j.rows || []).map(r => {
+          if (!r['소속']) r['소속'] = c.name;
+          return r;
+        });
+        return rows;
+      }))
+    );
+    const allRows = [];
+    results.forEach((result, i) => {
+      if (result.status === 'fulfilled') {
+        allRows.push(...result.value);
+      } else {
+        console.warn(COMPANY_URLS[i].name + ' 로드 실패:', result.reason);
+      }
+    });
+    ALL = allRows.filter(r => r['차량']);
+    const successCount = results.filter(r => r.status === 'fulfilled').length;
+    document.getElementById('syncStatus').textContent =
+      '🔄 ' + new Date().toLocaleTimeString('ko-KR') + ' 동기화 (' + successCount + '/' + COMPANY_URLS.length + '개 업체)';
+    document.getElementById('syncStatus').style.color = 'var(--green)';
+    buildFilters();
+    render();
+  } catch(e) {
+    console.error('시트 로드 오류:', e);
+    document.getElementById('syncStatus').textContent = '⚠️ 연결 실패 — 재시도 중...';
+    document.getElementById('syncStatus').style.color = 'var(--red)';
+  } finally {
+    setLoading(false);
+  }
+}
+
+function setLoading(on) {
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) overlay.style.display = on ? 'flex' : 'none';
+}
+
+function showConfigBanner() {
+  document.getElementById('configBanner').style.display = 'flex';
+  setLoading(false);
+}
+
+// 5분마다 자동 새로고침
+loadFromSheets();
+setInterval(loadFromSheets, 5 * 60 * 1000);
+
+</script>
+</body>
+</html>
